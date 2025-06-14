@@ -32,15 +32,6 @@ class CollegeSystemChatbot:
         self.student_id = None
         self.student_name = None
 
-        # Initialize NLP components
-        self.initialize_nlp()
-        
-        # Start conversation
-        self.get_student_id()
-        self.show_welcome()
-
-    def initialize_nlp(self):
-        """Initialize NLP components with a simpler approach"""
         # Initialize translator
         self.translator = Translator()
         
@@ -149,14 +140,14 @@ class CollegeSystemChatbot:
         self.conversation_responses = {
             'greeting': {
                 'en': [
-                    f"Hello {self.student_name}! How can I help you today?",
-                    f"Hi {self.student_name}! What can I do for you?",
-                    f"Greetings {self.student_name}! How may I assist you?"
+                    "Hello! How can I help you today?",
+                    "Hi! What can I do for you?",
+                    "Greetings! How may I assist you?"
                 ],
                 'ar': [
-                    f"مرحبا {self.student_name}! كيف يمكنني مساعدتك اليوم؟",
-                    f"اهلا {self.student_name}! كيف يمكنني خدمتك؟",
-                    f"السلام عليكم {self.student_name}! كيف يمكنني مساعدتك؟"
+                    "مرحبا! كيف يمكنني مساعدتك اليوم؟",
+                    "اهلا! كيف يمكنني خدمتك؟",
+                    "السلام عليكم! كيف يمكنني مساعدتك؟"
                 ]
             },
             'farewell': {
