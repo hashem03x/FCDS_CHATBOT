@@ -432,40 +432,40 @@ class CollegeSystemChatbot:
         """Format YouTube search results for display"""
         if not results:
             return {
-                'en': "I'm having trouble finding videos right now. Please try again in a moment.",
-                'ar': "أواجه مشكلة في العثور على الفيديوهات الآن. يرجى المحاولة مرة أخرى بعد قليل."
-            }[lang]
+                'type': 'text',
+                'content': {
+                    'en': "I'm having trouble finding videos right now. Please try again in a moment.",
+                    'ar': "أواجه مشكلة في العثور على الفيديوهات الآن. يرجى المحاولة مرة أخرى بعد قليل."
+                }[lang]
+            }
 
-        if lang == 'en':
-            response = "Here are some helpful videos I found:\n\n"
-            for i, video in enumerate(results, 1):
-                duration = video.get('duration', 0)
-                duration_min = duration // 60 if duration else 0
-                duration_sec = duration % 60 if duration else 0
-                views = video.get('views', 0)
-                
-                response += f"{i}. {video.get('title', 'Untitled')}\n"
-                response += f"   👤 {video.get('author', 'Unknown')}\n"
-                if duration:
-                    response += f"   ⏱️ {duration_min}:{duration_sec:02d}\n"
-                if views:
-                    response += f"   👁️ {views:,} views\n"
-                response += f"   🔗 {video.get('url', '')}\n\n"
-        else:
-            response = "إليك بعض الفيديوهات المفيدة التي وجدتها:\n\n"
-            for i, video in enumerate(results, 1):
-                duration = video.get('duration', 0)
-                duration_min = duration // 60 if duration else 0
-                duration_sec = duration % 60 if duration else 0
-                views = video.get('views', 0)
-                
-                response += f"{i}. {video.get('title', 'بدون عنوان')}\n"
-                response += f"   👤 {video.get('author', 'غير معروف')}\n"
-                if duration:
-                    response += f"   ⏱️ {duration_min}:{duration_sec:02d}\n"
-                if views:
-                    response += f"   👁️ {views:,} مشاهدة\n"
-                response += f"   🔗 {video.get('url', '')}\n\n"
+        # Create a structured response with type "links"
+        response = {
+            'type': 'links',
+            'content': {
+                'title': {
+                    'en': "Here are some helpful videos I found:",
+                    'ar': "إليك بعض الفيديوهات المفيدة التي وجدتها:"
+                }[lang],
+                'videos': []
+            }
+        }
+
+        for video in results:
+            duration = video.get('duration', 0)
+            duration_min = duration // 60 if duration else 0
+            duration_sec = duration % 60 if duration else 0
+            views = video.get('views', 0)
+            
+            video_info = {
+                'title': video.get('title', 'Untitled'),
+                'author': video.get('author', 'Unknown'),
+                'url': video.get('url', ''),
+                'duration': f"{duration_min}:{duration_sec:02d}" if duration else None,
+                'views': views
+            }
+            
+            response['content']['videos'].append(video_info)
 
         return response
 
